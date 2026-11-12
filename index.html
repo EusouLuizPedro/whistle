@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WHISTLE! — Avalie assobios</title>
+<style>
+:root{--bg:#100d1c;--panel:#1d1830;--panel2:#28213f;--text:#f7f3ff;--muted:#b8aecb;--purple:#a78bfa;--pink:#f0abfc;--line:#3b3155;--green:#86efac}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 0%,#30204d 0,transparent 38%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+header{max-width:1050px;margin:auto;padding:24px 22px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:950;letter-spacing:1.5px;font-size:25px}.logo span{color:var(--pink)}.tag{font-size:12px;color:var(--green);border:1px solid #315b48;border-radius:99px;padding:6px 10px}
+main{max-width:1050px;margin:auto;padding:10px 22px 60px}.hero{text-align:center;padding:28px 10px 30px}.eyebrow{color:var(--pink);font-weight:750;font-size:12px;letter-spacing:2px;text-transform:uppercase}.hero h1{font-size:clamp(34px,6vw,58px);line-height:1.02;margin:12px 0}.hero p{color:var(--muted);max-width:560px;margin:0 auto;line-height:1.6}
+.tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0 25px}.tab,button{font:inherit;cursor:pointer;border:0;border-radius:13px;padding:11px 16px;font-weight:750}.tab{background:var(--panel);color:var(--muted);border:1px solid var(--line)}.tab.active{background:#4c3573;color:white;border-color:#8663bd}
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}.card{background:linear-gradient(145deg,#211a36,#191427);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 14px 40px #0003}.card h2{margin:0 0 8px;font-size:20px}.sub{color:var(--muted);font-size:13px;line-height:1.5;margin:0 0 18px}
+.recordbox{border:1px dashed #665184;background:#171226;border-radius:18px;padding:22px;text-align:center}.mic{width:66px;height:66px;border-radius:50%;background:#3b2b59;display:grid;place-items:center;font-size:28px;margin:0 auto 12px}.timer{font-variant-numeric:tabular-nums;font-size:28px;font-weight:850;margin:8px}.primary{background:linear-gradient(100deg,#8b5cf6,#c084fc);color:white}.secondary{background:#382c50;color:#eee6ff;border:1px solid #594575}.danger{background:#54283f;color:#ffe3ee}.full{width:100%;margin-top:10px}.small{font-size:12px;color:var(--muted)}input[type=text]{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:#120f1f;color:white;margin:8px 0 4px;outline:none}input:focus{border-color:var(--purple)}audio{width:100%;margin-top:14px;height:40px}.feed{display:grid;gap:12px}.whistle{background:#211a35;border:1px solid var(--line);border-radius:17px;padding:16px}.whistle-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.anon{font-weight:800}.meta{color:var(--muted);font-size:12px}.score{color:#f9d78a;font-weight:850}.rate{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}.rate button{flex:1;min-width:35px;padding:9px 5px;background:#34294b;color:#e8ddff;border:1px solid #514269}.rate button.selected{background:#8b5cf6;color:white;border-color:#c4a1ff}.empty{text-align:center;color:var(--muted);padding:28px 10px;border:1px dashed var(--line);border-radius:16px}.notice{font-size:12px;color:#d4c8e8;background:#211a35;border-radius:12px;padding:12px;line-height:1.5;margin-top:14px}.hidden{display:none!important}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#f4eaff;color:#241536;padding:12px 18px;border-radius:99px;font-weight:750;box-shadow:0 8px 30px #0008;z-index:5;max-width:90%;text-align:center}
+footer{color:#8f84a4;text-align:center;font-size:12px;padding:25px}
+@media(max-width:740px){.layout{grid-template-columns:1fr}header{padding:18px}.hero{padding-top:20px}.card{padding:18px}}
+</style>
+</head>
+<body>
+<header><div class="logo">WHISTLE<span>!</span></div><div class="tag">● PROTÓTIPO</div></header>
+<main>
+<section class="hero"><div class="eyebrow">A comunidade do assobio</div><h1>Seu assobio merece<br><span style="color:var(--pink)">uma nota?</span></h1><p>Publique um áudio anônimo, descubra assobios da comunidade e dê notas de 1 a 10. Sem mostrar quem está por trás do microfone.</p></section>
+<nav class="tabs"><button class="tab active" data-view="feed">🎧 Avaliar assobios</button><button class="tab" data-view="record">🎙️ Enviar meu assobio</button><button class="tab" data-view="ranking">🏆 Ranking</button></nav>
+<section id="feedView" class="layout">
+<div class="card"><h2>🎧 Assobios para avaliar</h2><p class="sub">Ouça e escolha uma nota. Você não pode avaliar o mesmo áudio duas vezes.</p><div id="feed" class="feed"></div></div>
+<div class="card"><h2>📊 Como funciona</h2><p class="sub">Cada pessoa pode enviar seu assobio anonimamente. As notas formam a média de cada áudio.</p><div class="notice">🔒 Seu nome não aparece no feed. Esta primeira versão salva os áudios somente neste navegador — ainda não envia gravações para outras pessoas.</div><div style="margin-top:18px"><div class="meta">ÁUDIOS PUBLICADOS NESTE NAVEGADOR</div><div id="total" style="font-size:34px;font-weight:900;margin-top:4px">0</div></div></div>
+</section>
+<section id="recordView" class="layout hidden">
+<div class="card"><h2>🎙️ Grave seu assobio</h2><p class="sub">Use o microfone, escute sua gravação e publique com um apelido aleatório.</p><div class="recordbox"><div class="mic">🎤</div><div id="recordStatus" class="small">Pronto para gravar</div><div id="timer" class="timer">00:00</div><button id="recordBtn" class="primary">● Começar gravação</button><button id="stopBtn" class="secondary hidden">Parar gravação</button></div><audio id="preview" controls class="hidden"></audio><label class="small" for="caption">Legenda opcional</label><input id="caption" type="text" maxlength="60" placeholder="Ex.: tentei assobiar uma música 🎶"><button id="publishBtn" class="primary full" disabled>Publicar anonimamente</button><div class="notice">O navegador vai pedir permissão para usar o microfone. Grave apenas seu próprio assobio e evite incluir informações pessoais.</div></div>
+<div class="card"><h2>✨ Dicas para um bom envio</h2><p class="sub">• Grave em um lugar tranquilo.<br>• Tente deixar o assobio bem audível.<br>• Não coloque seu nome ou dados pessoais na legenda.<br>• Você pode ouvir antes de publicar.</p></div>
+</section>
+<section id="rankingView" class="hidden"><div class="card"><h2>🏆 Melhores assobios</h2><p class="sub">Ranking dos áudios publicados neste navegador, ordenados pela média das notas.</p><div id="ranking" class="feed"></div></div></section>
+</main>
+<footer>WHISTLE! — versão de demonstração • Feito para se divertir 🎵</footer>
+<div id="toast" class="toast hidden"></div>
+<script>
+const DB='whistle_local_v1', STORE='audios';let db,recorder,chunks=[],recordedBlob=null,stream=null,startAt=0,tick=null;
+const $=id=>document.getElementById(id);
+function openDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open(DB,1);req.onupgradeneeded=()=>req.result.createObjectStore(STORE,{keyPath:'id'});req.onsuccess=()=>{db=req.result;resolve()};req.onerror=()=>reject(req.error)})}
+function all(){return new Promise((resolve,reject)=>{const r=db.transaction(STORE).objectStore(STORE).getAll();r.onsuccess=()=>resolve(r.result.sort((a,b)=>b.created-a.created));r.onerror=()=>reject(r.error)})}
+function save(item){return new Promise((resolve,reject)=>{const r=db.transaction(STORE,'readwrite').objectStore(STORE).put(item);r.onsuccess=resolve;r.onerror=()=>reject(r.error)})}
+function toast(msg){$('toast').textContent=msg;$('toast').classList.remove('hidden');setTimeout(()=>$('toast').classList.add('hidden'),2600)}
+function avg(a){return a.ratings.length?a.ratings.reduce((x,y)=>x+y.score,0)/a.ratings.length:0}
+function dateLabel(t){return new Date(t).toLocaleDateString('pt-BR')}
+function safe(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function render(){const items=await all();$('total').textContent=items.length;
+const feed=$('feed');feed.innerHTML='';const unrated=items.filter(a=>!a.ratings.some(r=>r.voter===voterId));
+if(!unrated.length)feed.innerHTML='<div class="empty">Nenhum áudio novo para avaliar por enquanto.<br>Publique um assobio ou volte depois!</div>';
+unrated.forEach(a=>feed.append(makeCard(a,true)));
+const ranked=[...items].sort((a,b)=>avg(b)-avg(a));$('ranking').innerHTML=ranked.length?'':'<div class="empty">Ainda não há assobios publicados.</div>';
+ranked.forEach((a,i)=>$('ranking').append(makeCard(a,false,i+1)));
+}
+const voterId=localStorage.getItem('whistle_voter')||(()=>{const x=crypto.randomUUID();localStorage.setItem('whistle_voter',x);return x})();
+function makeCard(a,canRate,rank){const el=document.createElement('article');el.className='whistle';const score=a.ratings.length?avg(a).toFixed(1)+'/10':'Sem notas';el.innerHTML=`<div class="whistle-top"><div><div class="anon">${rank?rank+'. ':''}${safe(a.alias)}</div><div class="meta">${dateLabel(a.created)} · ${a.ratings.length} avaliação(ões)</div></div><div class="score">★ ${score}</div></div>${a.caption?`<p style="margin:10px 0 0;color:#d8cce9">${safe(a.caption)}</p>`:''}<audio controls preload="none"></audio>${canRate?'<div class="meta" style="margin-top:10px">Dê uma nota de 1 a 10:</div><div class="rate">'+Array.from({length:10},(_,i)=>`<button data-score="${i+1}">${i+1}</button>`).join('')+'</div>':''}`;
+const audio=el.querySelector('audio');audio.src=URL.createObjectURL(a.blob);
+if(canRate)el.querySelectorAll('[data-score]').forEach(btn=>btn.addEventListener('click',async()=>{const fresh=(await all()).find(x=>x.id===a.id);if(!fresh||fresh.ratings.some(r=>r.voter===voterId))return toast('Você já avaliou este assobio.');fresh.ratings.push({voter:voterId,score:Number(btn.dataset.score)});await save(fresh);toast('Nota enviada! Valeu por avaliar 🎵');render()}));
+return el}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));['feed','record','ranking'].forEach(v=>$(v+'View').classList.toggle('hidden',v!==b.dataset.view));if(b.dataset.view!=='record')render()}));
+$('recordBtn').onclick=async()=>{try{if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder)throw new Error('Seu navegador não oferece gravação de áudio.');stream=await navigator.mediaDevices.getUserMedia({audio:true});let mime=MediaRecorder.isTypeSupported('audio/webm;codecs=opus')?'audio/webm;codecs=opus':'audio/webm';recorder=new MediaRecorder(stream,{mimeType:mime});chunks=[];recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};recorder.onstop=()=>{recordedBlob=new Blob(chunks,{type:recorder.mimeType||'audio/webm'});$('preview').src=URL.createObjectURL(recordedBlob);$('preview').classList.remove('hidden');$('publishBtn').disabled=false;$('recordStatus').textContent='Gravação pronta para ouvir';stream.getTracks().forEach(t=>t.stop())};recorder.start();startAt=Date.now();$('recordBtn').classList.add('hidden');$('stopBtn').classList.remove('hidden');$('recordStatus').textContent='Gravando...';tick=setInterval(()=>{let s=Math.floor((Date.now()-startAt)/1000);$('timer').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');if(s>=30)stopRecording()},250)}catch(e){toast(e.message||'Não foi possível acessar o microfone.')}}; 
+function stopRecording(){if(recorder&&recorder.state!=='inactive')recorder.stop();clearInterval(tick);$('recordBtn').classList.remove('hidden');$('stopBtn').classList.add('hidden')}
+$('stopBtn').onclick=stopRecording;
+$('publishBtn').onclick=async()=>{if(!recordedBlob)return;const names=['Assobiador Misterioso','Melodia Anônima','Pessoa do Apito','Whistle Guest','Visitante Musical'];const item={id:crypto.randomUUID(),alias:names[Math.floor(Math.random()*names.length)]+' #'+Math.floor(100+Math.random()*900),caption:$('caption').value.trim(),blob:recordedBlob,created:Date.now(),ratings:[]};try{await save(item);recordedBlob=null;$('preview').classList.add('hidden');$('preview').removeAttribute('src');$('publishBtn').disabled=true;$('caption').value='';$('timer').textContent='00:00';$('recordStatus').textContent='Publicado neste navegador!';toast('Assobio publicado anonimamente neste navegador.');document.querySelector('[data-view="feed"]').click()}catch(e){toast('Não foi possível salvar o áudio.')}};
+openDB().then(render).catch(()=>toast('Seu navegador não conseguiu abrir o armazenamento local.'));
+</script>
+</body></html>
